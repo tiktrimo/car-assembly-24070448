@@ -1,6 +1,18 @@
 #include "gtest/gtest.h"
 #include "../CompatibilityValidator.h"
 
+// 테스트용 상수: assemble.cpp의 원본 enum 값과 동일
+namespace {
+    // CarType
+    const int SEDAN = 1, SUV = 2, TRUCK = 3;
+    // Engine
+    const int GM_ENGINE = 1, TOYOTA_ENGINE = 2, WIA_ENGINE = 3;
+    // BrakeSystem
+    const int MANDO_BRAKE = 1, CONTINENTAL_BRAKE = 2, BOSCH_BRAKE = 3;
+    // SteeringSystem
+    const int BOSCH_STEERING = 1, MOBIS_STEERING = 2;
+}
+
 class CompatibilityValidatorTest : public ::testing::Test {
 protected:
     CompatibilityValidator validator;

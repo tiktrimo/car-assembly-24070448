@@ -14,6 +14,7 @@ int main(int argc, char** argv)
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "assemblyCar/CompatibilityValidator.h"
 
 #define CLEAR_SCREEN "\033[H\033[2J"
 
@@ -297,31 +298,14 @@ void selectSteeringSystem(int answer)
 
 int isValidCheck()
 {
-    if (stack[CarType_Q] == SEDAN && stack[brakeSystem_Q] == CONTINENTAL)
-    {
-        return false;
-    }
-    else if (stack[CarType_Q] == SUV && stack[Engine_Q] == TOYOTA)
-    {
-        return false;
-    }
-    else if (stack[CarType_Q] == TRUCK && stack[Engine_Q] == WIA)
-    {
-        return false;
-    }
-    else if (stack[CarType_Q] == TRUCK && stack[brakeSystem_Q] == MANDO)
-    {
-        return false;
-    }
-    else if (stack[brakeSystem_Q] == BOSCH_B && stack[SteeringSystem_Q] != BOSCH_S)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-    return true;
+    CarConfig config;
+    config.carType       = stack[CarType_Q];
+    config.engine        = stack[Engine_Q];
+    config.brakeSystem   = stack[brakeSystem_Q];
+    config.steeringSystem = stack[SteeringSystem_Q];
+
+    CompatibilityValidator validator;
+    return validator.isValid(config) ? 1 : 0;
 }
 
 void runProducedCar()
