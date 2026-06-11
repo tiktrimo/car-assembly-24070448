@@ -58,6 +58,11 @@
       <AdditionalLibraryDirectories>C:\vcpkg\installed\x64-windows\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>gtest.lib;gmock.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D "C:\vcpkg\installed\x64-windows\debug\bin\gtest.dll" "$(OutDir)"
+xcopy /Y /D "C:\vcpkg\installed\x64-windows\debug\bin\gmock.dll" "$(OutDir)"</Command>
+      <Message>Copying gtest/gmock DLLs to output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
