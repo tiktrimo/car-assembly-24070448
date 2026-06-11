@@ -2,9 +2,10 @@
 
 #include "gmock/gmock.h"
 
-int main()
+int main(int argc, char** argv)
 {
-    testing::InitGoogleMock();
+    testing::InitGoogleTest(&argc, argv);
+    testing::InitGoogleMock(&argc, argv);
     return RUN_ALL_TESTS();
 }
 
