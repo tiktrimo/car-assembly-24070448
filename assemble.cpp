@@ -12,9 +12,10 @@ int main(int argc, char** argv)
 #else
 
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <string>
+#include <iostream>
 #include "assemblyCar/CompatibilityValidator.h"
+#include "assemblyCar/InputParser.h"
 
 #define CLEAR_SCREEN "\033[H\033[2J"
 
@@ -81,7 +82,7 @@ void delay(int ms)
 
 int main()
 {
-    char buf[100];
+    InputParser parser;
     int step = CarType_Q;
 
     while (1)
@@ -141,30 +142,23 @@ int main()
         printf("===============================\n");
 
         printf("INPUT > ");
-        fgets(buf, sizeof(buf), stdin);
+        std::string input;
+        std::getline(std::cin, input);
 
-        // 엔터 개행문자 제거
-        char *context = nullptr;
-        strtok_s(buf, "\r", &context);
-        strtok_s(buf, "\n", &context);
-
-        if (!strcmp(buf, "exit"))
+        if (parser.isExitCommand(input))
         {
             printf("바이바이\n");
             break;
         }
 
-        // 숫자로 된 대답인지 확인
-        char *checkNumber;
-        int answer = strtol(buf, &checkNumber, 10); // 문자열을 10진수로 변환
-
-        // 입력받은 문자가 숫자가 아니라면
-        if (*checkNumber != '\0')
+        auto parsed = parser.parseNumber(input);
+        if (!parsed.has_value())
         {
             printf("ERROR :: 숫자만 입력 가능\n");
             delay(800);
             continue;
         }
+        int answer = parsed.value();
 
         if (step == CarType_Q && !(answer >= 1 && answer <= 3))
         {

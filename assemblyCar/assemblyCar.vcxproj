@@ -78,12 +78,14 @@
   <ItemGroup>
     <ClCompile Include="..\assemble.cpp" />
     <ClCompile Include="CompatibilityValidator.cpp" />
+    <ClCompile Include="InputParser.cpp" />
     <ClCompile Include="test\CarConfigTest.cpp" />
     <ClCompile Include="test\InputParserTest.cpp" />
     <ClCompile Include="test\CompatibilityValidatorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CompatibilityValidator.h" />
+    <ClInclude Include="InputParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
