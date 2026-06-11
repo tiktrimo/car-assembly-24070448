@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 
 #define CLEAR_SCREEN "\033[H\033[2J"
 
-int stack[10];
+CarConfig currentCar;
 
 void selectCarType(int answer);
 void selectEngine(int answer);
@@ -256,7 +256,7 @@ int main()
 
 void selectCarType(int answer)
 {
-    stack[CarType_Q] = answer;
+    applyCarType(currentCar, answer);
     if (answer == 1)
         printf("차량 타입으로 Sedan을 선택하셨습니다.\n");
     if (answer == 2)
@@ -267,7 +267,7 @@ void selectCarType(int answer)
 
 void selectEngine(int answer)
 {
-    stack[Engine_Q] = answer;
+    applyEngine(currentCar, answer);
     if (answer == 1)
         printf("GM 엔진을 선택하셨습니다.\n");
     if (answer == 2)
@@ -278,7 +278,7 @@ void selectEngine(int answer)
 
 void selectbrakeSystem(int answer)
 {
-    stack[brakeSystem_Q] = answer;
+    applyBrakeSystem(currentCar, answer);
     if (answer == 1)
         printf("MANDO 제동장치를 선택하셨습니다.\n");
     if (answer == 2)
@@ -289,7 +289,7 @@ void selectbrakeSystem(int answer)
 
 void selectSteeringSystem(int answer)
 {
-    stack[SteeringSystem_Q] = answer;
+    applySteeringSystem(currentCar, answer);
     if (answer == 1)
         printf("BOSCH 조향장치를 선택하셨습니다.\n");
     if (answer == 2)
@@ -298,14 +298,8 @@ void selectSteeringSystem(int answer)
 
 int isValidCheck()
 {
-    CarConfig config;
-    config.carType       = stack[CarType_Q];
-    config.engine        = stack[Engine_Q];
-    config.brakeSystem   = stack[brakeSystem_Q];
-    config.steeringSystem = stack[SteeringSystem_Q];
-
     CompatibilityValidator validator;
-    return validator.isValid(config) ? 1 : 0;
+    return validator.isValid(currentCar) ? 1 : 0;
 }
 
 void runProducedCar()
@@ -316,34 +310,34 @@ void runProducedCar()
     }
     else
     {
-        if (stack[Engine_Q] == 4)
+        if (currentCar.engine == 4)
         {
             printf("엔진이 고장나있습니다.\n");
             printf("자동차가 움직이지 않습니다.\n");
         }
         else
         {
-            if (stack[CarType_Q] == 1)
+            if (currentCar.carType == 1)
                 printf("Car Type : Sedan\n");
-            if (stack[CarType_Q] == 2)
+            if (currentCar.carType == 2)
                 printf("Car Type : SUV\n");
-            if (stack[CarType_Q] == 3)
+            if (currentCar.carType == 3)
                 printf("Car Type : Truck\n");
-            if (stack[Engine_Q] == 1)
+            if (currentCar.engine == 1)
                 printf("Engine : GM\n");
-            if (stack[Engine_Q] == 2)
+            if (currentCar.engine == 2)
                 printf("Engine : TOYOTA\n");
-            if (stack[Engine_Q] == 3)
+            if (currentCar.engine == 3)
                 printf("Engine : WIA\n");
-            if (stack[brakeSystem_Q] == 1)
+            if (currentCar.brakeSystem == 1)
                 printf("Brake System : Mando\n");
-            if (stack[brakeSystem_Q] == 2)
+            if (currentCar.brakeSystem == 2)
                 printf("Brake System : Continental\n");
-            if (stack[brakeSystem_Q] == 3)
+            if (currentCar.brakeSystem == 3)
                 printf("Brake System : Bosch\n");
-            if (stack[SteeringSystem_Q] == 1)
+            if (currentCar.steeringSystem == 1)
                 printf("SteeringSystem : Bosch\n");
-            if (stack[SteeringSystem_Q] == 2)
+            if (currentCar.steeringSystem == 2)
                 printf("SteeringSystem : Mobis\n");
 
             printf("자동차가 동작됩니다.\n");
@@ -353,34 +347,24 @@ void runProducedCar()
 
 void testProducedCar()
 {
-    if (stack[CarType_Q] == SEDAN && stack[brakeSystem_Q] == CONTINENTAL)
+    CompatibilityValidator validator;
+    if (validator.isValid(currentCar))
     {
-        printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-        printf("Sedan에는 Continental제동장치 사용 불가\n");
-    }
-    else if (stack[CarType_Q] == SUV && stack[Engine_Q] == TOYOTA)
-    {
-        printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-        printf("SUV에는 TOYOTA엔진 사용 불가\n");
-    }
-    else if (stack[CarType_Q] == TRUCK && stack[Engine_Q] == WIA)
-    {
-        printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-        printf("Truck에는 WIA엔진 사용 불가\n");
-    }
-    else if (stack[CarType_Q] == TRUCK && stack[brakeSystem_Q] == MANDO)
-    {
-        printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-        printf("Truck에는 Mando제동장치 사용 불가\n");
-    }
-    else if (stack[brakeSystem_Q] == BOSCH_B && stack[SteeringSystem_Q] != BOSCH_S)
-    {
-        printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-        printf("Bosch제동장치에는 Bosch조향장치 이외 사용 불가\n");
+        printf("자동차 부품 조합 테스트 결과 : PASS\n");
     }
     else
     {
-        printf("자동차 부품 조합 테스트 결과 : PASS\n");
+        printf("자동차 부품 조합 테스트 결과 : FAIL\n");
+        if (currentCar.carType == SEDAN && currentCar.brakeSystem == CONTINENTAL)
+            printf("Sedan에는 Continental제동장치 사용 불가\n");
+        else if (currentCar.carType == SUV && currentCar.engine == TOYOTA)
+            printf("SUV에는 TOYOTA엔진 사용 불가\n");
+        else if (currentCar.carType == TRUCK && currentCar.engine == WIA)
+            printf("Truck에는 WIA엔진 사용 불가\n");
+        else if (currentCar.carType == TRUCK && currentCar.brakeSystem == MANDO)
+            printf("Truck에는 Mando제동장치 사용 불가\n");
+        else if (currentCar.brakeSystem == BOSCH_B && currentCar.steeringSystem != BOSCH_S)
+            printf("Bosch제동장치에는 Bosch조향장치 이외 사용 불가\n");
     }
 }
 

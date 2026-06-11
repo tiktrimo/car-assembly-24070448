@@ -11,6 +11,11 @@ namespace {
     const int BOSCH_STR = 1;
 }
 
+void applyCarType(CarConfig& config, int answer)       { config.carType       = answer; }
+void applyEngine(CarConfig& config, int answer)        { config.engine        = answer; }
+void applyBrakeSystem(CarConfig& config, int answer)   { config.brakeSystem   = answer; }
+void applySteeringSystem(CarConfig& config, int answer){ config.steeringSystem = answer; }
+
 bool CompatibilityValidator::isValid(const CarConfig& config) const {
     if (config.carType == SEDAN_TYPE && config.brakeSystem == CONTINENTAL_BRK)
         return false;

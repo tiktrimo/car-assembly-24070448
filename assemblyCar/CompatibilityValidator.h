@@ -12,3 +12,9 @@ class CompatibilityValidator {
 public:
     bool isValid(const CarConfig& config) const;
 };
+
+// CarConfig 필드를 갱신하는 순수 함수 (전역 상태 없음)
+void applyCarType(CarConfig& config, int answer);
+void applyEngine(CarConfig& config, int answer);
+void applyBrakeSystem(CarConfig& config, int answer);
+void applySteeringSystem(CarConfig& config, int answer);
