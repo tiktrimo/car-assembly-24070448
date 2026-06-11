@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\assemble.cpp" />
+    <ClCompile Include="CarAssemblyApp.cpp" />
     <ClCompile Include="CompatibilityValidator.cpp" />
     <ClCompile Include="InputParser.cpp" />
     <ClCompile Include="test\CarAssemblyAppTest.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="test\CompatibilityValidatorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CarAssemblyApp.h" />
     <ClInclude Include="CompatibilityValidator.h" />
     <ClInclude Include="InputParser.h" />
   </ItemGroup>
